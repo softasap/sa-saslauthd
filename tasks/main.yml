@@ -1,0 +1,4 @@
+---
+# tasks file for sa-saslauthd
+
+  - include: tasks_saslauthd.yml

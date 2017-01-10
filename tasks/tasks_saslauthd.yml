@@ -1,0 +1,19 @@
+---
+
+  - name:  SASLAUTHD | Installing packages
+    apt: pkg=sasl2-bin state=present
+    tags:
+      - saslauthd
+
+  - name: SASLAUTHD | Patch /etc/saslauthd.conf
+    lineinfile: dest=/etc/saslauthd.conf  regexp="{{item.regexp}}" line="{{item.line}}" insertafter="{{item.insertafter | default('EOF')}}"
+    with_items: "{{saslauthd_default_props | default([])}}"
+    become: yes
+    tags:
+      - saslauthd
+
+  - name: SASLAUTHD |  Restart service
+    service: name=saslauthd state=restarted enabled=yes
+    when: docker_test is not defined
+    tags:
+      - saslauthd
